@@ -6,8 +6,7 @@ setup(
     packages=['wowapi'],
     install_requires=[
         'requests',
-        'certifi',
-        'wsgiref'
+        'certifi'
     ],
 
     author = "Billy Overton",
