@@ -1,10 +1,10 @@
 import requests
 
 REGIONS = {
-    'US': 'https://us.api.battle.net/wow',
-    'EU': 'https://eu.api.battle.net/wow',
-    'KR': 'https://kr.api.battle.net/wow',
-    'TW': 'https://tw.api.battle.net/wow'
+    'US': 'https://us.battle.net/api/wow',
+    'EU': 'https://eu.battle.net/api/wow',
+    'KR': 'https://kr.battle.net/api/wow',
+    'TW': 'https://tw.battle.net/api/wow'
 }
 
 CHARACTER_FIELDS = [
@@ -53,7 +53,7 @@ class APIError(Exception):
 
 class API:
 
-    def __init__(self, apiKey, region='US', locale='en_US'):
+    def __init__(self, apiKey=None, region='US', locale='en_US'):
         self.apiKey = apiKey
         self.locale = locale
 
@@ -65,13 +65,16 @@ class API:
 
     def get_resource(self, resourceURL, parameters=None):
         url = self.baseUrl + resourceURL
-        payload = {'locale': self.locale, 'apikey': self.apiKey}
+        payload = {'locale': self.locale}
+        if self.apiKey is not None:
+            payload['apikey'] = self.apiKey
 
         if parameters is not None:
             # Merge parameters, overriding those that come from the call
             for key in parameters:
                 payload[key] = parameters[key]
 
+        print(url)
         r = requests.get(url, params=payload)
 
         # Raise an api error for all non-200 status codes
